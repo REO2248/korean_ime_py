@@ -44,10 +44,10 @@ def stroke(char=''):
         bslen-=1
     else:
         beforetext+=char
-    print(lastbefore)
     for i in range(bslen):
         keystroke(keyboard.Key.backspace)
     input_text(conversion(beforetext))
+    print(conversion(beforetext))
     lastbefore=conversion(beforetext)
 
 with keyboard.Events() as events:
