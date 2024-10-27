@@ -2,10 +2,22 @@ import pynput.keyboard as keyboard
 from convtable import conversion_table
 from keytable import keytable
 from acor_dic import acor_dic
+from worddic import worddic
 
 keycontroller = keyboard.Controller()
 
 internalkeystroke=1
+
+def common_prefix(str1, str2):
+    min_length = min(len(str1), len(str2))
+    for i in range(min_length):
+        if str1[i] != str2[i]:
+            return str1[:i]
+    return str1[:min_length]
+
+def bsandinput(str1, str2):
+    prefix = common_prefix(str1, str2)
+    return len(str1) - len(prefix), str2[len(prefix):]
 
 def keystroke(key):
     global internalkeystroke
@@ -42,15 +54,16 @@ def commit():
 def stroke(char=''):
     global beforetext
     global lastbefore
-    bslen=len(lastbefore)
+    backspaced=0
     if char=='BACKSPACE':
         beforetext=beforetext[0:-1]
-        bslen-=1
+        backspaced=1
     else:
         beforetext+=char
-    for i in range(bslen):
+    bslen, viewtext=bsandinput(lastbefore,conversion(beforetext))
+    for i in range(bslen-backspaced):
         keystroke(keyboard.Key.backspace)
-    input_text(conversion(beforetext))
+    input_text(viewtext)
     print(conversion(beforetext))
     lastbefore=conversion(beforetext)
 
