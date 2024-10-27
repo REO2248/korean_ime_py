@@ -75,6 +75,7 @@ def stroke(char=''):
     else:
         if convselecting:
             commit()
+            beforetext=''
         beforetext+=char
     bslen, viewtext=bsandinput(lastbefore,conversion(beforetext))
     for i in range(bslen-backspaced):
@@ -113,6 +114,7 @@ with keyboard.Events() as events:
         if type(event)==keyboard.Events.Release:
             pass
         if type(event)==keyboard.Events.Press:
+            print(beforetext)
             if internalkeystroke>0:
                 internalkeystroke-=1
                 continue
