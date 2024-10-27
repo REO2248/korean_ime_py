@@ -50,12 +50,14 @@ def stroke(char=''):
     print(conversion(beforetext))
     lastbefore=conversion(beforetext)
 
+
+
 with keyboard.Events() as events:
     for event in events:
-        if type(event)==keyboard.Events.Release:
-            pass
         if event.key==keyboard.Key.esc:
             exit()
+        if type(event)==keyboard.Events.Release:
+            pass
         if type(event)==keyboard.Events.Press:
             if internalkeystroke>0:
                 internalkeystroke-=1
@@ -69,7 +71,10 @@ with keyboard.Events() as events:
                 else:
                     commit()
             else:
-                if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None or event.key==keyboard.Key.enter:
+                if event.key in [keyboard.Key.shift, keyboard.Key.shift_l, keyboard.Key.shift_r,
+                                keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r]:
+                    continue
+                if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None or event.key==keyboard.Key.enter or event.key==keyboard.Key.space:
                     keystroke(keyboard.Key.backspace)
                 commit()
                 keystroke(event.key)
