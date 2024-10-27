@@ -69,7 +69,7 @@ with keyboard.Events() as events:
                 else:
                     commit()
             else:
-                if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None:
+                if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None or event.key==keyboard.Key.enter:
                     keystroke(keyboard.Key.backspace)
                 commit()
                 keystroke(event.key)
