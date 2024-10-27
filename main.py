@@ -53,7 +53,6 @@ def commit():
     if lastbefore in acor_dic.keys():
         for i in range(len(lastbefore)):
             keystroke(keyboard.Key.backspace)
-            print(55)
         input_text(acor_dic[lastbefore])
     beforetext=''
     lastbefore=''
@@ -80,7 +79,6 @@ def stroke(char=''):
     bslen, viewtext=bsandinput(lastbefore,conversion(beforetext))
     for i in range(bslen-backspaced):
         keystroke(keyboard.Key.backspace)
-        print(80)
     input_text(viewtext)
     print(conversion(beforetext))
     lastbefore=conversion(beforetext)
@@ -96,12 +94,10 @@ def convkey(shift:int=1):
     if not convselecting:
         convtext=conversion(beforetext)
     thiswordconvs=[convtext] + worddic[convtext]
-    print(len(thiswordconvs[convnum]))
     if len(thiswordconvs[convnum])==1:
         keystroke(keyboard.Key.backspace)
     for i in range(len(thiswordconvs[convnum])//2):
         keystroke(keyboard.Key.backspace)
-        print(100)
     convselecting=True
     convnum+=shift
     convnum=convnum%len(thiswordconvs)
@@ -124,7 +120,6 @@ with keyboard.Events() as events:
                 if convselecting:
                     commit()
                 keystroke(keyboard.Key.backspace)
-                print(120)
                 stroke(keytable[event.key.char])
             elif event.key==keyboard.Key.backspace:
                 if len(beforetext)>0:
@@ -143,6 +138,5 @@ with keyboard.Events() as events:
                     continue
                 if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None or event.key==keyboard.Key.enter or event.key==keyboard.Key.space:
                     keystroke(keyboard.Key.backspace)
-                    print(138)
                 commit()
                 keystroke(event.key)
