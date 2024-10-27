@@ -18,12 +18,6 @@ def input_text(text):
     global internalkeystroke
     for char in text:
         keystroke(char)
-        # internalkeystroke+=1
-        # keycontroller.press(keyboard.Key.alt)
-        # keystroke(keyboard.KeyCode.from_vk(107))
-        # for c in hex(ord(char))[2:]:
-        #     keystroke(keyboard.KeyCode.from_char(c))
-        # keycontroller.release(keyboard.Key.alt)
 
 def conversion(text):
     r=text[:]
