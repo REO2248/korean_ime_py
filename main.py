@@ -1,6 +1,7 @@
 import pynput.keyboard as keyboard
 from convtable import conversion_table
 from keytable import keytable
+from acor_dic import acor_dic
 
 keycontroller = keyboard.Controller()
 
@@ -31,7 +32,10 @@ lastbefore=''
 def commit():
     global beforetext
     global lastbefore
-    #input_text(lastbefore)
+    if lastbefore in acor_dic.keys():
+        for i in range(len(lastbefore)):
+            keystroke(keyboard.Key.backspace)
+        input_text(acor_dic[lastbefore])
     beforetext=''
     lastbefore=''
 
