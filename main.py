@@ -95,9 +95,7 @@ def convkey(shift:int=1):
     if not convselecting:
         convtext=conversion(beforetext)
     thiswordconvs=[convtext] + worddic[convtext]
-    if len(thiswordconvs[convnum])==1:
-        keystroke(keyboard.Key.backspace)
-    for i in range(len(thiswordconvs[convnum])//2):
+    for i in range(len(thiswordconvs[convnum])):
         keystroke(keyboard.Key.backspace)
     convselecting=True
     convnum+=shift
@@ -114,7 +112,6 @@ with keyboard.Events() as events:
         if type(event)==keyboard.Events.Release:
             pass
         if type(event)==keyboard.Events.Press:
-            print(beforetext)
             if internalkeystroke>0:
                 internalkeystroke-=1
                 continue
@@ -128,7 +125,7 @@ with keyboard.Events() as events:
                     stroke('BACKSPACE')
                 else:
                     commit()
-            elif event.key==keyboard.Key.ctrl_r:
+            elif event.key==keyboard.Key.shift_r:
                 convkey(1)
             elif convselecting and (event.key in [keyboard.Key.down,keyboard.Key.right]):
                 convkey(1)
@@ -136,9 +133,10 @@ with keyboard.Events() as events:
                 convkey(-1)
             else:
                 if event.key in [keyboard.Key.shift, keyboard.Key.shift_l, keyboard.Key.shift_r,
-                                keyboard.Key.ctrl, keyboard.Key.ctrl_l]:
+                                keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r]:
                     continue
                 if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None or event.key==keyboard.Key.enter or event.key==keyboard.Key.space:
                     keystroke(keyboard.Key.backspace)
                 commit()
-                keystroke(event.key)
+                if internalkeystroke>0:
+                    keystroke(event.key)
