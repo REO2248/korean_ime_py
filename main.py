@@ -81,7 +81,7 @@ def stroke(char=''):
     for i in range(bslen-backspaced):
         keystroke(keyboard.Key.backspace)
     input_text(viewtext)
-    print(conversion(beforetext))
+    print(conversion(beforetext).replace('','김일성').replace('','김정일').replace('','김정은'))
     lastbefore=conversion(beforetext)
 
 def convkey(shift:int=1):
@@ -94,7 +94,7 @@ def convkey(shift:int=1):
         return
     if not convselecting:
         convtext=conversion(beforetext)
-    thiswordconvs=[convtext] + worddic[convtext]
+    thiswordconvs=[convtext.replace('','김일성').replace('','김정일').replace('','김정은')] + worddic[convtext]
     for i in range(len(thiswordconvs[convnum])):
         keystroke(keyboard.Key.backspace)
     convselecting=True
@@ -127,9 +127,9 @@ with keyboard.Events() as events:
                     commit()
             elif event.key==keyboard.Key.shift_r:
                 convkey(1)
-            elif convselecting and (event.key in [keyboard.Key.down,keyboard.Key.right]):
+            elif convselecting and (event.key in [keyboard.Key.down]):
                 convkey(1)
-            elif convselecting and (event.key in [keyboard.Key.up,keyboard.Key.left]):
+            elif convselecting and (event.key in [keyboard.Key.up]):
                 convkey(-1)
             else:
                 if event.key in [keyboard.Key.shift, keyboard.Key.shift_l, keyboard.Key.shift_r,
