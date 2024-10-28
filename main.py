@@ -72,10 +72,14 @@ def stroke(char=''):
     if char=='BACKSPACE':
         beforetext=beforetext[0:-1]
         backspaced=1
+    elif char in '《》〈〉':
+        beforetext+=char
+        commit()
+        input_text(char)
+        return
     else:
         if convselecting:
             commit()
-            beforetext=''
         beforetext+=char
     bslen, viewtext=bsandinput(lastbefore,conversion(beforetext))
     for i in range(bslen-backspaced):
@@ -106,6 +110,7 @@ def convkey(shift:int=1):
     lastbefore=thiswordconvs[convnum]
 
 shiftldown=False
+ctrlldown=False
 is_inputmethod_enable=True
 
 with keyboard.Events() as events:
@@ -115,12 +120,16 @@ with keyboard.Events() as events:
         if type(event)==keyboard.Events.Release:
             if event.key==keyboard.Key.shift:
                 shiftldown=False
+            elif event.key==keyboard.Key.ctrl_l:
+                ctrlldown=False
         if type(event)==keyboard.Events.Press:
             if internalkeystroke>0:
                 internalkeystroke-=1
                 continue
             if event.key==keyboard.Key.shift:
                 shiftldown=True
+            elif event.key==keyboard.Key.ctrl_l:
+                ctrlldown=True
             if shiftldown and event.key==keyboard.Key.shift_r:
                 if is_inputmethod_enable:
                     if convselecting:
@@ -132,6 +141,8 @@ with keyboard.Events() as events:
                     print('enabled')
                 continue
             if not is_inputmethod_enable:
+                continue
+            if ctrlldown:
                 continue
             if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None and event.key.char in keytable.keys():
                 if convselecting:
