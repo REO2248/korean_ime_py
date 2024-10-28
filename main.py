@@ -6,7 +6,7 @@ from worddic import worddic
 
 keycontroller = keyboard.Controller()
 
-internalkeystroke=1
+internalkeystroke=0
 
 def common_prefix(str1, str2):
     min_length = min(len(str1), len(str2))
