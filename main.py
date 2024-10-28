@@ -105,15 +105,33 @@ def convkey(shift:int=1):
     print(convnum,thiswordconvs[convnum])
     lastbefore=thiswordconvs[convnum]
 
+shiftldown=False
+is_inputmethod_enable=True
+
 with keyboard.Events() as events:
     for event in events:
-        if event.key==keyboard.Key.esc:
+        if shiftldown and event.key==keyboard.Key.esc:
             exit()
         if type(event)==keyboard.Events.Release:
-            pass
+            if event.key==keyboard.Key.shift:
+                shiftldown=False
         if type(event)==keyboard.Events.Press:
             if internalkeystroke>0:
                 internalkeystroke-=1
+                continue
+            if event.key==keyboard.Key.shift:
+                shiftldown=True
+            if shiftldown and event.key==keyboard.Key.shift_r:
+                if is_inputmethod_enable:
+                    if convselecting:
+                        commit()
+                    is_inputmethod_enable=False
+                    print('disabled')
+                else:
+                    is_inputmethod_enable=True
+                    print('enabled')
+                continue
+            if not is_inputmethod_enable:
                 continue
             if type(event.key)==keyboard._win32.KeyCode and event.key.char is not None and event.key.char in keytable.keys():
                 if convselecting:
@@ -126,11 +144,10 @@ with keyboard.Events() as events:
                 else:
                     commit()
             elif event.key==keyboard.Key.shift_r:
-                convkey(1)
-            elif convselecting and (event.key in [keyboard.Key.down]):
-                convkey(1)
-            elif convselecting and (event.key in [keyboard.Key.up]):
-                convkey(-1)
+                if convselecting and shiftldown:
+                    convkey(-1)
+                else:
+                    convkey(1)
             else:
                 if event.key in [keyboard.Key.shift, keyboard.Key.shift_l, keyboard.Key.shift_r,
                                 keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r]:
